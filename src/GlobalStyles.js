@@ -19,7 +19,7 @@ export const GlobalStyles = createGlobalStyle`
     list-style: none;
   }
 
-  button: {
+  button {
     background: transparent;
     border: 0;
     outline: 0;
