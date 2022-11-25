@@ -1,11 +1,7 @@
-import './App.css'
+import { Category } from './components/Category'
 
 function App () {
-  return (
-    <div className='App'>
-      hola
-    </div>
-  )
+  return <Category />
 }
 
 export default App
