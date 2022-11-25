@@ -1,7 +1,12 @@
-import { Category } from './components/Category'
-
+import { ListOfCategories } from './components/ListOfCategories'
+import { GlobalStyles } from './GlobalStyles'
 function App () {
-  return <Category />
+  return (
+    <>
+      <GlobalStyles />
+      <ListOfCategories />
+    </>
+  )
 }
 
 export default App
