@@ -1,14 +1,22 @@
-import { ListOfCategories } from './components/ListOfCategories'
+
 import { GlobalStyles } from './GlobalStyles'
-import { ListOfPhotoCards } from './components/ListOfPhotoCards'
+import { Home } from './pages/Home'
 import { Logo } from './components/Logo'
+import { PhotoCardWithQuery } from './components/GetSinglePhoto'
 function App () {
+  const urlParams = new window.URLSearchParams(window.location.search)
+  const detailID = urlParams.get('detail')
+
   return (
     <>
       <GlobalStyles />
       <Logo />
-      <ListOfCategories />
-      <ListOfPhotoCards />
+      {
+        detailID
+          ? <PhotoCardWithQuery id={detailID} />
+          : <Home />
+      }
+
     </>
   )
 }

@@ -1,9 +1,9 @@
-const userModel = require('./models/userModel')
-const categoriesModel = require('./models/categoriesModel')
-const photosModel = require('./models/photosModel')
-const { gql } = require('apollo-server-express')
-const jsonwebtoken = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+import { find, hasFav as _hasFav, removeFav, addFav, create } from './models/userModel.js'
+import { list } from './models/categoriesModel.js'
+import { find as _find, addLike, removeLike, list as _list } from './models/photosModel.js'
+import { gql } from 'apollo-server-express'
+import jwt from 'jsonwebtoken'
+import { compare } from 'bcrypt'
 
 const typeDefs = gql`
   type User {
@@ -56,11 +56,11 @@ const typeDefs = gql`
 `
 
 function checkIsUserLogged (context) {
-  const {email, id} = context
+  const { email, id } = context
   // check if the user is logged
   if (!id) throw new Error('you must be logged in to perform this action')
   // find the user and check if it exists
-  const user = userModel.find({email})
+  const user = find({ email })
   // if user doesnt exist, throw an error
   if (!user) throw new Error('user does not exist')
   return user
@@ -68,54 +68,54 @@ function checkIsUserLogged (context) {
 
 function tryGetFavsFromUserLogged (context) {
   try {
-    const {email} = checkIsUserLogged(context)
-    const user = userModel.find({email})
+    const { email } = checkIsUserLogged(context)
+    const user = find({ email })
     return user.favs
-  } catch(e) {
+  } catch (e) {
     return []
   }
 }
 
 const resolvers = {
   Mutation: {
-    likeAnonymousPhoto: (_, {input}) => {
+    likeAnonymousPhoto: (_, { input }) => {
       // find the photo by id and throw an error if it doesn't exist
-      const {id: photoId} = input
-      const photo = photosModel.find({ id: photoId })
+      const { id: photoId } = input
+      const photo = _find({ id: photoId })
       if (!photo) {
         throw new Error(`Couldn't find photo with id ${photoId}`)
       }
       // put a like to the photo
-      photosModel.addLike({ id: photoId })
+      addLike({ id: photoId })
       // get the updated photos model
-      const actualPhoto = photosModel.find({ id: photoId })
+      const actualPhoto = _find({ id: photoId })
       return actualPhoto
     },
     likePhoto: (_, { input }, context) => {
       const { id: userId } = checkIsUserLogged(context)
 
       // find the photo by id and throw an error if it doesn't exist
-      const {id: photoId} = input
-      const photo = photosModel.find({ id: photoId })
+      const { id: photoId } = input
+      const photo = _find({ id: photoId })
       if (!photo) {
         throw new Error(`Couldn't find photo with id ${photoId}`)
       }
 
-      const hasFav = userModel.hasFav({ id: userId, photoId })
+      const hasFav = _hasFav({ id: userId, photoId })
 
       if (hasFav) {
-        photosModel.removeLike({ id: photoId })
-        userModel.removeFav({ id: userId, photoId, })
+        removeLike({ id: photoId })
+        removeFav({ id: userId, photoId })
       } else {
         // put a like to the photo and add the like to the user database
-        photosModel.addLike({ id: photoId })
-        userModel.addFav({ id: userId, photoId, })
+        addLike({ id: photoId })
+        addFav({ id: userId, photoId })
       }
 
       // get favs from user before exiting
       const favs = tryGetFavsFromUserLogged(context)
       // get the updated photos model
-      const actualPhoto = photosModel.find({ id: photoId, favs })
+      const actualPhoto = _find({ id: photoId, favs })
 
       return actualPhoto
     },
@@ -124,21 +124,21 @@ const resolvers = {
       // add 1 second of delay in order to see loading stuff
       await new Promise(resolve => setTimeout(resolve, 1000))
 
-      const {email, password} = input
+      const { email, password } = input
 
-      const user = await userModel.find({ email })
+      const user = await find({ email })
 
       if (user) {
         throw new Error('User already exists')
       }
 
-      const newUser = await userModel.create({
+      const newUser = await create({
         email,
         password
       })
 
       // return json web token
-      return jsonwebtoken.sign(
+      return jwt.sign(
         { id: newUser.id, email: newUser.email },
         process.env.JWT_SECRET,
         { expiresIn: '1y' }
@@ -151,20 +151,20 @@ const resolvers = {
       await new Promise(resolve => setTimeout(resolve, 1000))
 
       const { email, password } = input
-      const user = await userModel.find({ email })
+      const user = await find({ email })
 
       if (!user) {
         throw new Error('No user with that email')
       }
 
-      const valid = await bcrypt.compare(password, user.password)
+      const valid = await compare(password, user.password)
 
       if (!valid) {
         throw new Error('Incorrect password')
       }
 
       // return json web token
-      return jsonwebtoken.sign(
+      return jwt.sign(
         { id: user.id, email: user.email },
         process.env.JWT_SECRET,
         { expiresIn: '1d' }
@@ -172,23 +172,23 @@ const resolvers = {
     }
   },
   Query: {
-    favs(_, __, context) {
-      const {email} = checkIsUserLogged(context)
-      const {favs} = userModel.find({email})
-      return photosModel.list({ ids: favs, favs })
+    favs (_, __, context) {
+      const { email } = checkIsUserLogged(context)
+      const { favs } = find({ email })
+      return _list({ ids: favs, favs })
     },
-    categories() {
-      return categoriesModel.list()
+    categories () {
+      return list()
     },
-    photo(_, {id}, context) {
+    photo (_, { id }, context) {
       const favs = tryGetFavsFromUserLogged(context)
-      return photosModel.find({id, favs})
+      return _find({ id, favs })
     },
-    photos(_, {categoryId}, context) {
+    photos (_, { categoryId }, context) {
       const favs = tryGetFavsFromUserLogged(context)
-      return photosModel.list({categoryId, favs})
+      return _list({ categoryId, favs })
     }
   }
 }
 
-module.exports = { typeDefs, resolvers }
+export { typeDefs, resolvers }

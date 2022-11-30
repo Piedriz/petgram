@@ -4,13 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "now-build": "npm run build",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "standard --fix"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.1",
     "axios": "^1.2.0",
+    "graphql": "^16.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.6.0",
