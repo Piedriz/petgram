@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { ContextProvider } from './context/Context'
 import App from './App'
 import {
   ApolloClient,
@@ -13,7 +14,9 @@ const client = new ApolloClient({
 })
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>
+  <ContextProvider>
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </ContextProvider>
 )
