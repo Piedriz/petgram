@@ -3,11 +3,12 @@ import { Context } from '../context/Context'
 import { UserForm } from '../components/UserForm'
 
 export const NotRegisterUser = () => {
-  const { activateAuth } = useContext(Context)
+  const { registerNewUser } = useContext(Context)
+
   return (
     <>
-      <UserForm onSubmit={activateAuth} title='Registrarse' />
-      <UserForm onSubmit={activateAuth} title='Iniciar Sesion' />
+      <UserForm onSubmit={registerNewUser} title='Registrarse' />
+      <UserForm onSubmit={() => { console.log('a') }} title='Iniciar Sesion' />
     </>
   )
 }
