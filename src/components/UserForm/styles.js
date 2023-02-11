@@ -12,6 +12,10 @@ export const Input = styled.input`
   display: block;
   width: 100%;
 `
+export const ErrorMessage = styled.p`
+  padding-top: 10px;
+  color: red;
+`
 
 export const Button = styled.button`
   background: #8d00ff;

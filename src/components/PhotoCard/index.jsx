@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocalStorage } from '../../hooks/useLocalStorage'
+
 import { useNearScreen } from '../../hooks/useNearScreen'
 import { useMuationToogleLike } from '../../hooks/useMutationToggleLike'
 import { FavButton } from '../FavButton'
@@ -7,19 +7,16 @@ import { ImgWrapper, Img, Article } from './styles'
 import { Link } from 'react-router-dom'
 const DEFAULT_IMAGE = 'https://res.cloudinary.com/midudev/image/upload/w_150/v1555671700/category_hamsters.jpg'
 
-export const PhotoCard = ({ id, likes = 0, src = DEFAULT_IMAGE }) => {
-  const key = `LIKE-${id}`
-  const [liked, setLiked] = useLocalStorage(key, false)
+export const PhotoCard = ({ liked, id, likes = 0, src = DEFAULT_IMAGE }) => {
   const [show, ref] = useNearScreen()
   const { mutation } = useMuationToogleLike()
 
   const handleFavClick = () => {
-    !liked && mutation({
+    mutation({
       variables: {
         input: { id }
       }
     })
-    setLiked(!liked)
   }
   return (
     <Article ref={ref}>
