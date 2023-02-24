@@ -29,7 +29,7 @@ export const UserForm = ({ onSubmit, OnError, OnLoading, title }) => {
         'Logueado con extio!',
         'success'
       )
-      activateAuth(data.signup)
+      activateAuth(data.login)
     }
   }
 

@@ -3,7 +3,14 @@ import { PhotoCard } from '../PhotoCard'
 import { useGetPhotos } from '../../hooks/useGetPhotos'
 
 export const ListOfPhotoCards = ({ categoryId }) => {
-  const { data, loading, error } = useGetPhotos(categoryId)
+  // const [data, setData] = React.useState([])
+  const { data, loading, error, refetch } = useGetPhotos(categoryId)
+
+  React.useEffect(() => {
+    refetch()
+  }, [])
+
+  console.log(data)
 
   if (loading) {
     return <p>cargando...</p>
@@ -15,7 +22,7 @@ export const ListOfPhotoCards = ({ categoryId }) => {
   return (
     <ul>
       {data.photos.map((photo) => (
-        <PhotoCard likes={photo.likes} src={photo.src} key={photo.id} id={photo.id} />
+        <PhotoCard liked={photo.liked} likes={photo.likes} src={photo.src} key={photo.id} id={photo.id} />
       ))}
     </ul>
   )
