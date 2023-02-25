@@ -10,9 +10,13 @@ export const ContextProvider = ({ children }) => {
     setIsAuth(true)
     window.sessionStorage.setItem('token', token)
   }
+  const removeAuth = (token) => {
+    setIsAuth(false)
+    window.sessionStorage.removeItem('token')
+  }
 
   return (
-    <Context.Provider value={{ isAuth, activateAuth }}>
+    <Context.Provider value={{ isAuth, activateAuth, removeAuth }}>
       {children}
     </Context.Provider>
   )

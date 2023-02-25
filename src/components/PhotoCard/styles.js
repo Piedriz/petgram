@@ -3,6 +3,8 @@ import { fadeIn } from '../../styles/animation'
 
 export const Article = styled.article`
   min-height: 250px;
+  margin-left: 20px;
+  margin-right: 20px;
 `
 export const ImgWrapper = styled.div`
   border-radius: 10px;

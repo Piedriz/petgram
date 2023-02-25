@@ -1,7 +1,8 @@
 import React, { useContext } from 'react'
 import { useInputValue } from '../../hooks/useInputValue'
-import { Form, Input, Button, Title, ErrorMessage } from './styles'
+import { Form, Input, Title, ErrorMessage } from './styles'
 import { Context } from '../../context/Context'
+import { SubmitButton } from '../SubmitButton'
 import Swal from 'sweetalert2'
 
 export const UserForm = ({ onSubmit, OnError, OnLoading, title }) => {
@@ -43,7 +44,7 @@ export const UserForm = ({ onSubmit, OnError, OnLoading, title }) => {
       <Form disabled={OnLoading} onSubmit={handleSubmit}>
         <Input disabled={OnLoading} placeholder='Email' {...email} />
         <Input disabled={OnLoading} placeholder='Password' {...password} />
-        <Button disabled={OnLoading}>{title}</Button>
+        <SubmitButton disabled={OnLoading}>{title}</SubmitButton>
         <ErrorMessage>{OnError?.message}</ErrorMessage>
       </Form>
     </>

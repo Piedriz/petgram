@@ -8,6 +8,7 @@ export const List = styled.ul`
     min-height: 110px;
     &::-webkit-scrollbar {
     display: none;
+    
   };
   ${props => props.fixed && css`
   ${fadeIn({ time: '.3s' })}
@@ -28,4 +29,8 @@ export const List = styled.ul`
 `
 export const Item = styled.li`
     padding: 0 8px;
+`
+export const ListContainer = styled.div`
+  margin-left: 20px;
+  margin-right: 20px;
 `

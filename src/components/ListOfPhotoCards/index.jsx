@@ -1,6 +1,8 @@
 import React from 'react'
 import { PhotoCard } from '../PhotoCard'
 import { useGetPhotos } from '../../hooks/useGetPhotos'
+import { ThreeDots } from 'react-loader-spinner'
+import { WrapperContainer } from '../WrapperContainer'
 
 export const ListOfPhotoCards = ({ categoryId }) => {
   // const [data, setData] = React.useState([])
@@ -10,10 +12,20 @@ export const ListOfPhotoCards = ({ categoryId }) => {
     refetch()
   }, [])
 
-  console.log(data)
-
   if (loading) {
-    return <p>cargando...</p>
+    return (
+      <WrapperContainer>
+        <ThreeDots
+          height='80'
+          width='80'
+          textAlign='center'
+          radius='9'
+          color='#f514b1'
+          ariaLabel='three-dots-loading'
+          visible
+        />
+      </WrapperContainer>
+    )
   }
   if (error) {
     console.log(error)
