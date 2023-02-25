@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Category } from '../Category'
-import { List, Item, ListContainer } from './styles'
+import { List, Item } from './styles'
 
 const useCategoriesData = () => {
   const [categories, setCategories] = useState([])
@@ -34,13 +34,12 @@ export const ListOfCategories = () => {
   }, [showFixed])
 
   const renderList = (fixed) => (
-    <ListContainer>
-      <List fixed={fixed}>
-        {categories.map((category) => (
-          <Item key={category.id}><Category {...category} path={`/pet/${category.id}`} /></Item>
-        ))}
-      </List>
-    </ListContainer>
+    <List fixed={fixed}>
+      {categories.map((category) => (
+        <Item key={category.id}><Category {...category} path={`/pet/${category.id}`} /></Item>
+      ))}
+    </List>
+
   )
   return (
     <>

@@ -18,8 +18,7 @@ export const PhotoCard = ({ liked, id, likes = 0, src = DEFAULT_IMAGE }) => {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Primero debe iniciar sesión',
-        footer: '<a href="/login">Iniciar sesión</a>'
+        text: 'Primero debe iniciar sesión'
       })
       return
     }

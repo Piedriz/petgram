@@ -30,7 +30,3 @@ export const List = styled.ul`
 export const Item = styled.li`
     padding: 0 8px;
 `
-export const ListContainer = styled.div`
-  margin-left: 20px;
-  margin-right: 20px;
-`

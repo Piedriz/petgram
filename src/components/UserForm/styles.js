@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 
 export const Form = styled.form`
-  padding: 16px 0;
+  padding: 16px 16px;
+
 `
 
 export const Input = styled.input`
@@ -19,5 +20,5 @@ export const ErrorMessage = styled.p`
 export const Title = styled.h2`
   font-size: 16px;
   font-weight: 500;
-  padding: 8px 0;
+  padding: 8px 8px;
 `
